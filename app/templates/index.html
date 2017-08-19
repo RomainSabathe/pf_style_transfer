@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <h2>Pink Floyd visual style transfer</h2>
+    </head>
+    <body>
+        <form action="{{ url_for('process') }}", method='post'>
+            <input type='text' name='style_img_http'>
+            <br/>
+            <input type='text' name='target_img_http'>
+            <br/>
+            <br/>
+            <input type='submit'>
+        </form>
+    </body>
+</html>
