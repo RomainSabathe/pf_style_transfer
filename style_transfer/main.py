@@ -106,8 +106,7 @@ postprocessing_flow = transforms.Compose([
     transforms.Normalize(mean=[-0.40760392, -0.45795686, -0.48501961],
                          std=[1, 1, 1]),
     # convert to RGB
-    transforms.Lambda(lambda x: x[torch.LongTensor([2, 1, 0])]),
-    transforms.Lambda(lambda x: x.mul_(255))])
+    transforms.Lambda(lambda x: x[torch.LongTensor([2, 1, 0])])])
 
 def tensor_to_pil_image(tensor):
     """Takes a tensor that hasn't been yet postprocessed and transfoms it
@@ -162,8 +161,8 @@ def main(style_img, target_img):
     targets = style_targets + content_targets
 
     # Run style transfer.
-    max_iter = 200
-    show_iter = 20
+    max_iter = 10
+    show_iter = 1
     optimizer = optim.LBFGS([t_output_img])
 
     for n_iter in range(max_iter):
@@ -182,9 +181,7 @@ def main(style_img, target_img):
             return loss
         optimizer.step(closure)
 
-    out_image = tensor_to_pil_image(t_output_img.data[0].cpu().squeeze())
-
-    out_image.save('tmp/output.jpg')
+    return tensor_to_pil_image(t_output_img.data[0].cpu().squeeze())
 
 
 if __name__ == '__main__':

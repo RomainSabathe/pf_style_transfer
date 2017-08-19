@@ -1,7 +1,9 @@
-import numpy as np
+import os
+import shutil
 import requests
 import logging
 from PIL import Image
+from time import gmtime, strftime
 
 
 def get_img(img_http, dest=None):
@@ -18,7 +20,33 @@ def get_img(img_http, dest=None):
     logging.debug('Saving image to dest.')
     # TODO: check image extension.
     # TODO: handle dest check... (existence)
-    dest = dest if dest is not None else 'tmp/tmp_img.jpg'
+    if dest is not None:
+        create_backup(dest)
+    else:
+        dest = '/tmp/tmp_img.jpg'
     with open(dest, 'w') as f:
         f.write(req.content)
-    return np.array(Image.open(dest))
+    return Image.open(dest)
+
+
+def save_img(pil_img, dest):
+    """Saves  PIL image to disk.
+
+    Args:
+        pil_img (PIL.Image): the image to be saved.
+        dest (str): where the image should be saved.
+    """
+    create_backup(dest)
+    pil_img.save(dest)
+
+
+def create_backup(dest):
+    """If a file exists at `dest`, we create a copy of it by associating it
+    with a unique timestamp."""
+    if not os.path.exists(dest):
+        return
+    base_name = os.path.basename(dest)
+    folder_name = os.path.dirname(dest)
+    timestamp = strftime('%Y%m%d_%H%M%S', gmtime())
+    new_dest = os.path.join(folder_name, '{}_{}'.format(timestamp, base_name))
+    shutil.copy(dest, new_dest)

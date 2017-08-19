@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <h2>Pink Floyd visual style transfer</h2>
+    </head>
+    <body>
+        <img src="{{ url_for('static', filename='style_img.jpg') }}?{{ hash }}"
+             style="width:256px"> + 
+         <img src="{{ url_for('static', filename='target_img.jpg') }}?{{ hash }}"
+             style="width:256px"> = 
+        <br />
+        <img src="{{ url_for('static', filename='blend_img.jpg') }}?{{ hash }}"
+             style="width:516px"> 
+    </body>
+</html>
