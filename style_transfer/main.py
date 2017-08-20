@@ -1,10 +1,12 @@
+import sys
 import torch
-from torch.autograd import Variable
+import logging
 import torch.nn as nn
 import torch.nn.functional as F
 from torch import optim
-
+from torch.autograd import Variable
 from torchvision import transforms
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 class VGG(nn.Module):
@@ -176,7 +178,8 @@ def main(style_img, target_img):
             loss.backward()
 
             if n_iter % show_iter == 0:
-                print('Iteration {}, loss: {:.4f}'.format(n_iter, loss.data[0]))
+                logging.debug('Iteration {}, loss: {:.4f}'.format(
+                    n_iter, loss.data[0]))
 
             return loss
         optimizer.step(closure)

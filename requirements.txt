@@ -1,0 +1,6 @@
+http://download.pytorch.org/whl/cu75/torch-0.2.0.post1-cp27-cp27mu-manylinux1_x86_64.whl
+torchvision
+Flask==0.10.1
+requests==2.18.3
+numpy==1.13.1
+Pillow==4.1.1

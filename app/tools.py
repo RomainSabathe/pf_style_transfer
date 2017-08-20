@@ -1,9 +1,12 @@
 import os
+import sys
 import shutil
 import requests
 import logging
 from PIL import Image
 from time import gmtime, strftime
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
 
 
 def get_img(img_http, dest=None):
@@ -14,16 +17,18 @@ def get_img(img_http, dest=None):
         img_http (str): a valid html address pointing to an image.
         dest (str): where the image will be stored locally.
     """
-    logging.debug('Making a request to get image.')
+    logging.info('Making a request to get image.')
+    logging.debug('address={}'.format(img_http))
     req = requests.get(img_http)
 
-    logging.debug('Saving image to dest.')
     # TODO: check image extension.
     # TODO: handle dest check... (existence)
     if dest is not None:
         create_backup(dest)
     else:
         dest = '/tmp/tmp_img.jpg'
+    logging.info('Saving image to dest.')
+    logging.debug('dest={}'.format(dest))
     with open(dest, 'w') as f:
         f.write(req.content)
     return Image.open(dest)
@@ -49,4 +54,7 @@ def create_backup(dest):
     folder_name = os.path.dirname(dest)
     timestamp = strftime('%Y%m%d_%H%M%S', gmtime())
     new_dest = os.path.join(folder_name, '{}_{}'.format(timestamp, base_name))
+
+    logging.info('Creating a backup.')
+    logging.debug('source={}, dest={}'.format(dest, new_dest))
     shutil.copy(dest, new_dest)
