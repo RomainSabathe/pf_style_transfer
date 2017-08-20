@@ -129,11 +129,11 @@ if torch.cuda.is_available():
     vgg.cuda()
 
 
-def main(style_img, target_img):
+def main(style_img, content_img):
     # CONVENTION: if a variable has a `t_` prefix, it means it's a tensor.
 
     # Loading and preprocessing the images.
-    images = [style_img, target_img]
+    images = [style_img, content_img]
     t_images = [preprocessing_flow(img) for img in images]
     t_images = [Variable(t_img.unsqueeze(0)) for t_img in t_images]
     if torch.cuda.is_available():

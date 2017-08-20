@@ -4,9 +4,29 @@
     </head>
     <body>
         <form action="{{ url_for('process') }}", method='post'>
-            <input type='text' name='style_img_http'>
+            I want to extract the 
+            <select name='pf_role' id="pf_role">
+                <option value="style">style</option>
+                <option value="content">content</option>
+            </select> 
+            of one of the following Pink Floyd images:
+            <br />
+            <ul>
+                {% for pf_img_name in pf_img_names %}
+                <li>
+                    <input type="radio" name="pf_img_choice"
+                           id="pf_img_choice_{{ pf_img_name }}"
+                           value="{{ pf_img_name }}">
+                    <label for="{{ pf_img_name }}">
+                        <img src="{{ url_for('static',
+                                             filename=pf_img_name) }}"
+                         style="height:128px">
+                    </label>
+                </li>
+                {% endfor %}
+            </ul>
             <br/>
-            <input type='text' name='target_img_http'>
+            and blend it with this image (give URL): <input type='text' name='target_img_http'>
             <br/>
             <br/>
             <input type='submit'>

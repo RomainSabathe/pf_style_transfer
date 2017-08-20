@@ -10,7 +10,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def get_img(img_http, dest=None):
-    """Downloads an image from the web and returns it as a numpy array.
+    """Downloads an image from the web and returns it as a PIL image.
     The image can be stored if a `dest` is given.
 
     Args:
@@ -31,7 +31,7 @@ def get_img(img_http, dest=None):
     logging.debug('dest={}'.format(dest))
     with open(dest, 'w') as f:
         f.write(req.content)
-    return Image.open(dest)
+    return open_img(dest)
 
 
 def save_img(pil_img, dest):
@@ -43,6 +43,15 @@ def save_img(pil_img, dest):
     """
     create_backup(dest)
     pil_img.save(dest)
+
+
+def open_img(dest):
+    """Loads an image on disk as a PIL image.
+
+    Args:
+        dest (str): where the image is located.
+    """
+    return Image.open(dest)
 
 
 def create_backup(dest):
