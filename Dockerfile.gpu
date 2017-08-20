@@ -1,0 +1,60 @@
+FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
+
+# Inspired by https://github.com/floydhub/dl-docker
+#         and https://github.com/prakhar1989/docker-curriculum
+MAINTAINER https://github.com/RomainSabathe
+
+# Install dependencies
+RUN apt-get update
+RUN apt-get install -yqq \
+		bc \
+		build-essential \
+		cmake \
+		curl \
+		g++ \
+		gfortran \
+		libffi-dev \
+		libfreetype6-dev \
+		libhdf5-dev \
+		libjpeg-dev \
+		libjpeg8-dev \
+		liblcms2-dev \
+		libopenblas-dev \
+		liblapack-dev \
+		libpng12-dev \
+		libssl-dev \
+		libtiff5-dev \
+		libwebp-dev \
+		libzmq3-dev \
+		pkg-config \
+		software-properties-common \
+		unzip \
+		wget \
+		zlib1g-dev 
+RUN apt-get clean && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/*
+
+
+# Install Anaconda
+ENV CONDA_PATH /opt/miniconda
+RUN mkdir -p /tmp/miniconda && \
+    curl --show-error \
+         --insecure \
+         --location https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh \
+         --output /tmp/miniconda/Miniconda.sh && \
+    bash /tmp/miniconda/Miniconda.sh -b -p $CONDA_PATH && \
+    rm -rf /tmp/miniconda
+ENV PATH=${CONDA_PATH}/bin:${PATH}
+RUN conda update -y conda
+
+
+# Install PyTorch
+RUN conda install -y pytorch torchvision cuda80 -c soumith
+# Install Flask
+RUN pip install flask
+
+WORKDIR /var/pf_style_transfer
+COPY . /var/pf_style_transfer
+EXPOSE 5000
+CMD ["python", "./run.py"]
