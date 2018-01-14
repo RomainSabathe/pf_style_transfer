@@ -2,6 +2,10 @@
 
 The goal was to allow me 24hrs to build a simple webapp that applies the style transfer algorithm on a pre-selection of Pink Floyd images.
 
+Here is an example of output (content of Tame Impala's Innerspeaker cover with Pink Floyd's Meddle cover style):
+
+![image](https://github.com/RomainSabathe/pf_style_transfer/blob/master/output.jpg?raw=true)
+
 
 ### Why this project? (140 chars)
 
